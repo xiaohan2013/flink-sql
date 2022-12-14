@@ -1,0 +1,10 @@
+#  常见问题
+1. NoSuchMethodError: io.javalin.core.CachedRequestWrapper.getContentLengthLong()J
+···
+servlet-api 冲突，检查是否有其它版本的servlet-api依赖
+
+artifactId为：javax.servlet
+
+查看方式 mvn dependency:tree
+
+···
