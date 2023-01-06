@@ -85,7 +85,13 @@
             <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-parquet -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-parquet_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-common -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
@@ -168,6 +174,11 @@
             <artifactId>hudi-flink</artifactId>
             <version>0.12.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.hudi</groupId>
+            <artifactId>hudi-flink1.14.x</artifactId>
+            <version>0.12.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.hudi/hudi-flink1.15.x -->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.hudi</groupId>-->
@@ -240,6 +251,14 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.26</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

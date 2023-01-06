@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  # 主节点的容器
+  redis-server-master:
+    image: redis:4.0.12
+    container_name: redis-server-master
+    restart: always
+    # 为了规避Docker中端口映射可能带来的问题
+    # 这里选择使用host网络
+    network_mode: host
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - my-redis-network
+    # 指定时区，保证容器内时间正确
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      # 映射配置文件和数据目录
+      - ./redis-master.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis-master:/data
+#    sysctls:
+#      # 必要的内核参数
+#      net.core.somaxconn: '511'
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  # 从节点1的容器
+  redis-server-slave-1:
+    image: redis:4.0.12
+    container_name: redis-server-slave-1
+    restart: always
+    network_mode: host
+#    ports:
+#      - 6380:6380
+#    networks:
+#      - my-redis-network
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis-slave1.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis-slave-1:/data
+#    sysctls:
+#      net.core.somaxconn: '511'
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  # 从节点2的容器
+  redis-server-slave-2:
+    image: redis:4.0.12
+    container_name: redis-server-slave-2
+    restart: always
+    network_mode: host
+#    ports:
+#      - 6381:6381
+#    networks:
+#      - my-redis-network
+    depends_on:
+      - redis-server-master
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./redis-slave2.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis-slave-2:/data
+#    sysctls:
+#      net.core.somaxconn: '511'
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+#networks:
+#  my-redis-network:
+#    driver: bridge

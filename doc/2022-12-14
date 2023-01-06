@@ -8,3 +8,7 @@ artifactId为：javax.servlet
 查看方式 mvn dependency:tree
 
 ···
+
+2、Exception in thread "main" java.lang.NoClassDefFoundError: org/apache/flink/formats/parquet/utils/SerializableConfiguration
+
+3、NOT ENFORCED表示flinksql不会对主键做强制的唯一性约束、非空约束，而且目前flinksql中只支持这种类型的主键。

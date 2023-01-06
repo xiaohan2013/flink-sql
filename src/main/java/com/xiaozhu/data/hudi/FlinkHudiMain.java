@@ -3,6 +3,7 @@ package com.xiaozhu.data.hudi;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.TableResult;
 import org.apache.flink.table.api.config.ExecutionConfigOptions;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 
@@ -42,9 +43,18 @@ public class FlinkHudiMain {
         );
 
         // 写入数据
-        streamTableEnv.executeSql("insert into dwd_orders_cow select  order_number, price, buyer.first_name as first_name, buyer.last_name as last_name, order_time from Orders");
+//        streamTableEnv.executeSql("insert into dwd_orders_cow select order_number, price, buyer.first_name as first_name, buyer.last_name as last_name, order_time from Orders");
 
         // 查询数据
-
+        streamTableEnv.executeSql("CREATE TABLE print (\n" +
+                "    order_number BIGINT,\n" +
+                "    price     DECIMAL(32,2),\n" +
+                "    first_name     STRING,\n" +
+                "    last_name     STRING,\n" +
+                "    order_time     TIMESTAMP(3)\n" +
+                ") WITH (\n" +
+                "   'connector'  = 'print'\n" +
+                ")");
+        TableResult tableResult = streamTableEnv.executeSql("insert into print select order_number, price, first_name, last_name, order_time from dwd_orders_cow");
     }
 }
