@@ -7,6 +7,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -116,11 +117,14 @@ public class TempRecordUtils {
         public void flatMap(String o, Collector<TempRecord> collector) throws Exception {
             TempRecord tempRecord = new TempRecord();
             String[] strings = o.split(",");
-            Arrays.asList(strings).stream().map(System.out::printf);
             tempRecord.setProvince(strings[0]);
             tempRecord.setCity(strings[1]);
-            tempRecord.setTemp(Double.parseDouble(strings[2]));
-            tempRecord.setTimeEpochMilli(Timestamp.valueOf(strings[3]+".000").getTime());
+            tempRecord.setTemp(Double.parseDouble(strings[3]));
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            Date date = formatter.parse(strings[4]);
+            ((SimpleDateFormat) formatter).applyPattern("yyyy-MM-dd HH:mm:ss.SSS");
+            String newDateString = formatter.format(date);
+            tempRecord.setTimeEpochMilli(Timestamp.valueOf(newDateString).getTime());
             collector.collect(tempRecord);
         }
     }
