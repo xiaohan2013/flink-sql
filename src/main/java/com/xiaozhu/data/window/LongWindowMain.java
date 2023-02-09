@@ -14,6 +14,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -30,6 +31,7 @@ import org.apache.flink.util.Collector;
 import redis.clients.jedis.Tuple;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -164,6 +166,8 @@ public class LongWindowMain {
         env.disableOperatorChaining();
 
         env.setRestartStrategy(new RestartStrategies.NoRestartStrategyConfiguration());
+        env.enableCheckpointing(Duration.ofSeconds(10).getSeconds(), CheckpointingMode.EXACTLY_ONCE);
+
 
         SingleOutputStreamOperator<User> source = env.addSource(new DataGeneratorSource<User>(new RandomGenerator<User>() {
             @Override
