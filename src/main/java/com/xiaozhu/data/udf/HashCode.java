@@ -1,5 +1,6 @@
 package com.xiaozhu.data.udf;
 
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.table.functions.FunctionContext;
 import org.apache.flink.table.functions.ScalarFunction;
 
@@ -16,4 +17,7 @@ public class HashCode extends ScalarFunction {
     public int eval(String s) {
         return s.hashCode() * factor;
     }
+
+//    public TypeInformation<?> getResultType(Class<?>[] classes) {
+//    }
 }
