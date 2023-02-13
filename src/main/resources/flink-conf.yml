@@ -1,0 +1,5 @@
+
+
+
+# 最多保留Checkpoint的个数
+state.checkpoints.num-retained: 3
